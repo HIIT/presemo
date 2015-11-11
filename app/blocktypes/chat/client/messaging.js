@@ -29,6 +29,7 @@ var rpc = require('/core/rpc');
 var common = require('./commonClient.js');
 
 var Message = require('./Message');
+var MessageList = require('./MessageList');
 
 exports = module.exports = initMessaging;
 
@@ -70,6 +71,22 @@ function initMessagingBasics(block) {
   // Traversed in highlights, for example
   if (!block.msgs) block.msgs = [];
   if (!block.msgsById) block.msgsById = {};
+
+  alert("foo");
+
+  console.log( block.$msgsDiv[ 0 ] );
+
+  var r = React.createElement( MessageList, { id: block.id, items : block.msgs } );
+
+  console.log( React.renderToStaticMarkup( r ) );
+
+  console.log( ReactDOM );
+  console.log( block.$msgsDiv[ 0 ] );
+
+  // make msg-list react
+  ReactDOM.render(
+    r , block.$msgsDiv[ 0 ]
+  );
 
   // load previous messages when a "data" call is made
   // TODO get first batch of messages already from block config
@@ -247,6 +264,7 @@ function $msgIn(msg, immediate) {
     var $removedMsg = $('#' + removedMsg.id); // From document, not scoped to $el this time
     $removedMsg.remove(); // .detach would keep the events intact
   }
+  /*
 
   // TODO load more button
 
@@ -258,7 +276,13 @@ function $msgIn(msg, immediate) {
 
   var $msgsDiv = this.$msgsDiv;
 
-  var html = React.renderToStaticMarkup( React.createElement( Message, { name : 'Dr. Cats' } ) );
+  var html = React.renderToStaticMarkup( React.createElement( Message, { msg : msg } ) );
+
+  console.log( MessageList );
+
+  var html2 = React.renderToStaticMarkup( React.createElement( MessageList, { items : this.msgs } ) );
+
+  console.log( html2 )
 
   $msg.append( html );
 
@@ -309,7 +333,7 @@ function $msgIn(msg, immediate) {
       });
     }
   }
-
+ */
 };
 
 function initReplying(block) {

@@ -5,8 +5,8 @@ var Message = React.createClass({
     return React.createElement(
       "div",
       null,
-      "Hello ",
-      this.props.name
+      "Message text: ",
+      this.props.msg.text
     );
   }
 });
