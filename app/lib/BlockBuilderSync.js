@@ -21,6 +21,8 @@
  */
 /*jshint node: true */
 
+var babel = require("babel-core")
+
 "use strict";
 
 if (!module.parent) {
@@ -380,8 +382,11 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
 
       // Minify file (or just beautify it if in dev env) if filename does not
       // include .min.
+
       if (filename.indexOf('.min.') == -1) {
         try {
+          // processedFileContents = babel.transform( processedFileContents , { "plugins": ["transform-react-jsx"] } ); // fix react
+          // console.log("OK?");
           processedFileContents = minifyJS(processedFileContents);
         } catch (e) {
           console.error(
