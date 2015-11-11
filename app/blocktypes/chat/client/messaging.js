@@ -28,6 +28,8 @@ var rpc = require('/core/rpc');
 
 var common = require('./commonClient.js');
 
+var Message = require('./Message');
+
 exports = module.exports = initMessaging;
 
 // TODO think whether to extend prototype properly.
@@ -255,6 +257,10 @@ function $msgIn(msg, immediate) {
   })));
 
   var $msgsDiv = this.$msgsDiv;
+
+  var html = React.renderToStaticMarkup( React.createElement( Message, { name : 'Dr. Cats' } ) );
+
+  $msg.append( html );
 
   if (msg.parent) {
     if (__SCREEN__) {
