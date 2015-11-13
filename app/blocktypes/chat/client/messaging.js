@@ -28,7 +28,6 @@ var rpc = require('/core/rpc');
 
 var common = require('./commonClient.js');
 
-var Message = require('./Message');
 var MessageList = require('./MessageList');
 
 exports = module.exports = initMessaging;
@@ -72,16 +71,7 @@ function initMessagingBasics(block) {
   if (!block.msgs) block.msgs = [];
   if (!block.msgsById) block.msgsById = {};
 
-  alert("foo");
-
-  console.log( block.$msgsDiv[ 0 ] );
-
   var r = React.createElement( MessageList, { id: block.id, items : block.msgs } );
-
-  console.log( React.renderToStaticMarkup( r ) );
-
-  console.log( ReactDOM );
-  console.log( block.$msgsDiv[ 0 ] );
 
   // make msg-list react
   ReactDOM.render(
