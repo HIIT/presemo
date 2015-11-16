@@ -81,6 +81,7 @@ function initMessagingBasics(block) {
   // load previous messages when a "data" call is made
   // TODO get first batch of messages already from block config
   // for fast rendering, just update more via data or specific rpc requests
+  /*
   block.on('data', function(data) {
     // TODO compare here or somewhere
     if (data.msgs) {
@@ -89,8 +90,9 @@ function initMessagingBasics(block) {
       }
     }
   });
+  */
 
-  block.$msgIn = $msgIn;
+  // block.$msgIn = $msgIn;
 
   // Reset block is here for now
   block.$clear = function() {
