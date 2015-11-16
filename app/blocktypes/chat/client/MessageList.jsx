@@ -23,34 +23,25 @@ var MessageList = React.createClass({
       </div>;
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() { // check which is the corrct term here
 
     var self = this;
 
-    socket.onmessage = function(event) {
+    // integrating using props.block isn't the fanciest way to do this, but will do for now
 
-      event = JSON.parse(event.data);
-
-      console.log( event );
-
-      if( ! event.m && event.p.length >= 0 && event.p[0] && event.p[0].msgs ) {
-        self.setState( { 'msgs': event.p[0].msgs } );
-        return;
+    this.props.block.on('data', function(data) {
+      // TODO compare here or somewhere
+      if (data.msgs) {
+        self.setState( { 'msgs': data.msgs } );
       }
+    });
 
-      if ( event.m !== undefined && event.m.indexOf("$msgIn") !== -1 && event.m.indexOf( self.props.id ) ) {
+    this.props.block.$msgIn = function( msg ) {
 
-          var message = event.p[0];
+      var msgs = self.state.msgs;
+      msgs.push( msg );
+      self.setState( { 'msgs': msgs } );
 
-          console.log( self );
-
-          console.log( self.state );
-
-          var msgs = self.state.msgs;
-          msgs.push( message );
-          self.setState( { 'msgs': msgs } );
-
-      }
     }
   }
 

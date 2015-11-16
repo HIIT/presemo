@@ -71,7 +71,7 @@ function initMessagingBasics(block) {
   if (!block.msgs) block.msgs = [];
   if (!block.msgsById) block.msgsById = {};
 
-  var r = React.createElement( MessageList, { id: block.id, items : block.msgs } );
+  var r = React.createElement( MessageList, { block : block } );
 
   // make msg-list react
   ReactDOM.render(
