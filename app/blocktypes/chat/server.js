@@ -396,7 +396,8 @@ var BlockConstructorMixin = {
       username: username,
       q: this.frontends.moderated ? 'x' : '',
       admin: (req.channel.type === 'control'),
-      parent: msgIn.parent
+      parent: msgIn.parent,
+      tags: []
     };
 
     attrs.meta = {
@@ -684,65 +685,25 @@ var BlockConstructorMixin = {
 
     var msg = this.msgs[msgId];
 
-    // TODO proper tagging
-    // Not persisted yet
-    if (tag !== 'screen') return;
-
-    if (!this.highlights) this.highlights = [];
-
-    var highlights = this.highlights;
-    function findPosById(id) {
-      for (var i = 0; i < highlights.length; i++) {
-        if (highlights[i].id == msg.id) {
-          return i;
-        }
-      }
-      return null;
+    if( ! msg.tags  ) {
+      msg.tags = [];
     }
 
-    var position = findPosById(msg.id);
-    if (position !== null) {
-      // already highlighted, delighlight
-      this.highlights.splice(position, 1);
-      console.info({
-        userId: req.user.id,
-        channelId: req.channel.id,
-        blockId: this.id,
-        msgId: msg.id,
-        highlight: false
-      }, 'highlight');
+    var index = msg.tags.indexOf( tag );
 
+    if( index == -1 ) {
+      msg.tags.push( tag );
     } else {
-      // Let's add a highlight, use object to allow tags later perhaps
-      this.highlights.push({id: msg.id});
-      console.info({
-        userId: req.user.id,
-        channelId: req.channel.id,
-        blockId: this.id,
-        msgId: msg.id,
-        highlight: true
-      }, 'highlight');
+      msg.tags.splice( index, 1 );
     }
 
-    // Update clients
-    // Update block config or data?
-    // Perhaps let's use data for now, still
+    // save
+    this.saveContent(); // ?
 
-    // TODO will send also to web.
-    //this.rpc('$highlightsIn', this.highlights);
-
+    // update everything!
     for (var channelId in this.channels) {
-      if (this.channels[channelId].type !== 'web') {
-        this.rpc(channelId + ':$highlightsIn', this.highlights);
-      }
+      this.rpc(channelId + ':$data', msg );
     }
-
-    console.info({
-      userId: req.user.id,
-      channelId: req.channel.id,
-      blockId: this.id,
-      highlights: this.highlights
-    }, '$toggleTag');
   },
 
   // Almost the same as clearTags below, used for highlights

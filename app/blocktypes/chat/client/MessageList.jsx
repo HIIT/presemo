@@ -41,6 +41,20 @@ var MessageList = React.createClass({
       }
     });
 
+    this.props.block.$data = function( msg ) {
+
+      var msgs = self.state.msgs;
+      
+      for( var i = 0; i < msgs.length; i++ ) { // could be done more smartly?
+        if( msgs[i].id === msg.id ) {
+          msgs[i] = msg;
+        }
+      }
+
+      self.setState( { 'msgs': msgs } );
+    };
+
+
     this.props.block.$msgIn = function( msg ) {
 
       var msgs = self.state.msgs;

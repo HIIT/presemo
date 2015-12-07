@@ -19,9 +19,12 @@ var Message = React.createClass({
 
   },
 
-  highlight: function() {
+  $highlight: function() {
     this.props.block.rpc('$toggleTag', this.props.message.id, 'screen');
-    console.log("Hurraa!");
+  },
+
+  $delete: function() {
+    this.props.block.rpc('$toggleTag', this.props.message.id, 'delete');
   },
 
   render: function render() {
@@ -29,24 +32,39 @@ var Message = React.createClass({
     var buttons = [];
 
     if( __CONTROL__ ) { // if-structures inside return seem a bit hairy
-      var b = <button className="btn btn-xs btn-primary" onClick={this.highlight}>Highlight</button>;
+      var b = <button className="btn btn-xs btn-primary" onClick={this.$highlight}>Highlight</button>;
       buttons.push( b );
     }
 
     if( __CONTROL__ ) { // if-structures inside return seem a bit hairy
-      var b = <button className="btn btn-xs btn-primary">Delete</button>;
+      var b = <button className="btn btn-xs btn-primary" onClick={this.$delete}>Delete</button>;
       buttons.push( b );
     }
 
-    var time = new Date( this.props.message.time );
+    var time = new Date( this.props.message.time || this.props.message.tc );
     time = this.time_fix( time );
 
-    return <div>
+    var style = {};
+
+    var tags = this.props.message.tags || [];
+
+    if( tags.indexOf('screen') >= 0 ) style.fontWeight = 'bold';
+
+    if( tags.indexOf('delete') >= 0 )  {
+      if( __CONTROL__ ) {
+        style.color = 'grey';
+      } else {
+        style.display = 'none';
+      }
+    }
+
+    return <div style={style}>
       {time}{' '}-{' '}
       {this.props.message.text}{' '}
       {buttons}
     </div>;
   }
+
 });
 
 module.exports = Message;
