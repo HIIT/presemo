@@ -18,8 +18,11 @@ var MessageList = React.createClass({
       return <Message key={index} message={item}/>;
     };
 
+    var msgs = this.state.msgs.slice();
+    msgs.reverse();
+
     return <div>
-        {this.state.msgs.map(createItem)}
+        {msgs.map(createItem)}
       </div>;
   },
 
@@ -38,11 +41,17 @@ var MessageList = React.createClass({
 
     this.props.block.$msgIn = function( msg ) {
 
+      console.log("New message!");
+
       var msgs = self.state.msgs;
       msgs.push( msg );
       self.setState( { 'msgs': msgs } );
 
     }
+
+    console.log( this.props.block );
+    console.log( this.props.block$msgIn );
+
   }
 
 });
