@@ -19,12 +19,17 @@ var Message = React.createClass({
 
   },
 
+  highlight: function() {
+    this.props.block.rpc('$toggleTag', this.props.message.id, 'screen');
+    console.log("Hurraa!");
+  },
+
   render: function render() {
 
     var buttons = [];
 
     if( __CONTROL__ ) { // if-structures inside return seem a bit hairy
-      var b = <button className="btn btn-xs btn-primary">Highlight</button>;
+      var b = <button className="btn btn-xs btn-primary" onClick={this.highlight}>Highlight</button>;
       buttons.push( b );
     }
 

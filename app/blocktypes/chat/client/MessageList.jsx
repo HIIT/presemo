@@ -14,8 +14,10 @@ var MessageList = React.createClass({
 
   render: function render() {
 
+    var self = this;
+
     var createItem = function createItem(item, index) {
-      return <Message key={index} message={item}/>;
+      return <Message key={index} message={item} block={self.props.block}/>;
     };
 
     var msgs = this.state.msgs.slice();
