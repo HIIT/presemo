@@ -43,16 +43,11 @@ var MessageList = React.createClass({
 
     this.props.block.$msgIn = function( msg ) {
 
-      console.log("New message!");
-
       var msgs = self.state.msgs;
       msgs.push( msg );
       self.setState( { 'msgs': msgs } );
 
     }
-
-    console.log( this.props.block );
-    console.log( this.props.block$msgIn );
 
   }
 
