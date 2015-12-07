@@ -48,7 +48,18 @@ var Message = React.createClass({
 
     var tags = this.props.message.tags || [];
 
-    if( tags.indexOf('screen') >= 0 ) style.fontWeight = 'bold';
+    if( tags.indexOf('screen') >= 0 ) {
+      if( __SCREEN__ ) { // todo: fixme, does not overlay nicely
+        style.background = "grey";
+        style.fontSize = "40px";
+        style.position = "relative";
+        style.top = -250;
+        style.height = "50px";
+
+      } else {
+        style.fontWeight = 'bold';
+      }
+    }
 
     if( tags.indexOf('delete') >= 0 )  {
       if( __CONTROL__ ) {
