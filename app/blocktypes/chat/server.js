@@ -36,6 +36,8 @@ var UserStore = require('../../lib/UserStore');
 var invariant = require('../../lib/utils/invariant');
 var mergeInto = require('../../lib/utils/mergeInto');
 
+var lda = require('lda');
+
 if (SiteConfig.CONNECT_TWITTER) {
   // Experimental Twitter integration
   var twit = require('twit');
@@ -440,6 +442,15 @@ var BlockConstructorMixin = {
         socket.rpc(this.id + '.$msgIn', msg.toWire(socket.user, socket.channel));
       }
     }
+
+    // implement a simple topic modelling for each message
+    var texts = [];
+    for( var msg in this.msgs ) {
+      msg = this.msgs[ msg ];
+      texts.push( msg.text );
+    }
+
+    var topics = lda( texts, 5, 5);
 
     console.info({
       userId: req.user.id,
