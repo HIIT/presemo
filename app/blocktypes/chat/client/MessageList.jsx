@@ -8,7 +8,8 @@ var MessageList = React.createClass({
 
   getInitialState: function() {
     return {
-      msgs : []
+      msgs : [],
+      topics: 1
     };
   },
 
@@ -22,6 +23,24 @@ var MessageList = React.createClass({
 
     var msgs = this.state.msgs.slice();
     msgs.reverse();
+
+    if( __CONTROL__ ) {
+
+      var topics = [];
+      for( var i = 0; i < this.state.topics; i++ ) {
+
+        var topicMsgs = msgs.filter( function( item ) {
+          return item.topic == i;
+        } );
+
+        topics.push( <div className='pull-left'>{topicMsgs.map(createItem)}</div> );
+
+      };
+
+      return <div className='clearfix'>{topics}</div>;
+
+    }
+
 
     return <div>
         {msgs.map(createItem)}
@@ -37,14 +56,21 @@ var MessageList = React.createClass({
     this.props.block.on('data', function(data) {
       // TODO compare here or somewhere
       if (data.msgs) {
-        self.setState( { 'msgs': data.msgs } );
+        self.setState( { 'msgs': data.msgs, 'topics' : 1 } );
       }
     });
+
+    this.props.block.$msgs = function(data) {
+      // TODO compare here or somewhere
+      if (data.msgs) {
+        self.setState( { 'msgs': data.msgs, 'topics': data.number } );
+      }
+    };
 
     this.props.block.$data = function( msg ) {
 
       var msgs = self.state.msgs;
-      
+
       for( var i = 0; i < msgs.length; i++ ) { // could be done more smartly?
         if( msgs[i].id === msg.id ) {
           msgs[i] = msg;

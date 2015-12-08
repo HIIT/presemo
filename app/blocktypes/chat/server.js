@@ -443,6 +443,8 @@ var BlockConstructorMixin = {
       }
     }
 
+    // TODO: separate to a function
+
     // implement a simple topic modelling for each message
     var texts = [];
     for( var msg in this.msgs ) {
@@ -450,7 +452,31 @@ var BlockConstructorMixin = {
       texts.push( msg.text );
     }
 
+    // TODO: determine number of topics from the data
     var topics = lda( texts, 5, 5);
+
+    // TODO: infer topics per message from the lda
+    var topicMsgs = { number : 5, msgs: [] };
+
+    for (var i = 0; i < this.msgIds.length; i++) {
+      var msg = this.msgs[ this.msgIds[i] ];
+      if (msg) {
+
+        msg.topic = Math.floor( Math.random() * 5 );
+
+        topicMsgs.msgs.push( msg );
+      }
+    }
+    for (var channelId in this.channels) { // todo: send only to contol / stage ?
+      //this.rpc(channelId + ':$msgIn', msg.toWire(req));
+      var channel = this.channels[channelId];
+      for (var socketId in channel.eioSockets) {
+        var socket = channel.eioSockets[socketId];
+        if (!socket.user || !socket.rpc) continue;
+        socket.rpc(this.id + '.$msgs', topicMsgs );
+      }
+    }
+
 
     console.info({
       userId: req.user.id,
@@ -773,11 +799,18 @@ var BlockConstructorMixin = {
   // TODO this single getter or multiple, for each feature?
   // Usually better to have consolidated in config and them
   // perhaps separate calls for features.
-  $getData: function(req) {
+
+  $getData: function( req ) {
+
     var maxCount = 500;
     if (req.channel.type === 'web') {
       maxCount = 50;
     }
+    req.reply( this.getData( maxCount ) );
+  },
+
+
+  getData: function( maxCount ) {
 
     var msgs = this.msgs;
     var msgIds = this.msgIds;
@@ -793,21 +826,16 @@ var BlockConstructorMixin = {
       if (msg) {
         // sends also hidden messages
         // TODO mark own messages
-        outMsgs.push(msg.toWire(req.user, req.channel));
+        outMsgs.push( msg );
       }
     }
 
     // TODO properly
     var highlights = this.highlights || [];
     var picks = this.picks || [];
-    if (req.channel.type === 'WEB') {
-      // Don't push highlights and picks to participants yet.
-      highlights = [];
-      picks = [];
-    }
 
     // TODO add total messages count or something to enable 'more' button
-    req.reply({msgs: outMsgs, highlights: highlights, picks: picks});
+    return {msgs: outMsgs, highlights: highlights, picks: picks};
   },
 
   // TODO getMoreData, where the parameters contain the last seen message id
