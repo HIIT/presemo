@@ -54,7 +54,6 @@ var MessageList = React.createClass({
         self.setState( { 'msgs': data.msgs } );
       }
       if( data.user ) {
-        alert( data.user );
         self.setState( { 'user' : data.user } );
       }
     });
