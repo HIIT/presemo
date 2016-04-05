@@ -1002,6 +1002,7 @@ var MessageMixin = {
       tweetId: this.tweetId, // only for tweets, otherwise undefined
       html: this.html, // only for tweets, otherwise undefined
       response : this.response,
+      rates : this.rates
     });
     return this;
   },
@@ -1016,6 +1017,7 @@ var MessageMixin = {
       username: this.username ? this.username : '',
       parent: this.parent ? this.parent : undefined,
       response : this.response,
+      rates : this.rates | {}
       //promoted: this.promoted ? true : undefined
       //isWire: true
     };
