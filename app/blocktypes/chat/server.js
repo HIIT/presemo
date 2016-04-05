@@ -796,7 +796,7 @@ var BlockConstructorMixin = {
     }
 
     // TODO add total messages count or something to enable 'more' button
-    req.reply({msgs: outMsgs, highlights: highlights, picks: picks});
+    req.reply({msgs: outMsgs, highlights: highlights, picks: picks, user : req.user.id } );
   },
 
   // TODO getMoreData, where the parameters contain the last seen message id
@@ -838,13 +838,11 @@ var BlockConstructorMixin = {
     req.reply({msgs: outMsgs});
   },
 
-  $rate: function( req, msg, user, rate) {
+  $rate: function( req, msg, rate) {
 
-    console.log( msg );
-
+    var user = req.user.id;
     var msg = this.msgs[msg];
 
-    console.log( msg );
     if( ! msg.rates ) {
       msg.rates = {};
     }
@@ -852,11 +850,10 @@ var BlockConstructorMixin = {
     msg.save();
 
     for (var channelId in this.channels) {
-      if (this.channels[channelId].type !== 'web') {
-        this.rpc(channelId + ':$rated', user, rate);
-      }
+      // TODO: send only to relevan user, not all
+      this.rpc(channelId + ':$rated', msg.meta.userId, rate);
     }
-    
+
     req.reply();
   }
 

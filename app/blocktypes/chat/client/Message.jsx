@@ -28,7 +28,7 @@ var Message = React.createClass({
   },
 
   $rate: function( i ) {
-    this.props.block.rpc('$rate', this.props.message.id, 'nalle', i );
+    this.props.block.rpc('$rate', this.props.message.id, i );
   },
 
   render: function render() {

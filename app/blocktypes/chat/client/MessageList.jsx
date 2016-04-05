@@ -9,7 +9,8 @@ var MessageList = React.createClass({
   getInitialState: function() {
     return {
       msgs : [],
-      rates : []
+      rates : [],
+      user : -1
     };
   },
 
@@ -25,10 +26,13 @@ var MessageList = React.createClass({
     msgs.reverse();
 
     return <div>
+
+      <div style={{'position' : 'fixed', 'top' : '5px', 'right' : '25px', 'background' : 'white'}}>
+        {self.state.rates}
+      </div>
+
         {msgs.map(createItem)}
-        <div style={{'position' : 'fixed', 'top' : '0px', 'right' : '0px'}}>
-          {self.state.rates}
-        </div>
+
       </div>;
   },
 
@@ -48,6 +52,10 @@ var MessageList = React.createClass({
       // TODO compare here or somewhere
       if (data.msgs) {
         self.setState( { 'msgs': data.msgs } );
+      }
+      if( data.user ) {
+        alert( data.user );
+        self.setState( { 'user' : data.user } );
       }
     });
 
@@ -74,9 +82,12 @@ var MessageList = React.createClass({
     };
 
     this.props.block.$rated = function( user , rate  ) {
-      var rates = self.state.rates;
-      rates.push( rate );
-      self.setState( { 'rates' : rates } );
+
+      if( user == self.state.user ) {
+        var rates = self.state.rates;
+        rates.push( rate );
+        self.setState( { 'rates' : rates } );
+      }
     };
 
   }
