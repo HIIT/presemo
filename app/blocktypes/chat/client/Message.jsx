@@ -27,6 +27,10 @@ var Message = React.createClass({
     this.props.block.rpc('$toggleTag', this.props.message.id, 'delete');
   },
 
+  $rate: function( i ) {
+    this.props.block.rpc('$rate', this.props.message.id, 'nalle', i );
+  },
+
   render: function render() {
 
     var buttons = [];
@@ -58,10 +62,19 @@ var Message = React.createClass({
       }
     }
 
+    var rates = [1,2,3,4,5];
+
     return <div style={style}>
       {time}{' '}-{' '}
       {this.props.message.text}{' '}
       {buttons}
+
+      <div>
+        { rates.map( (function(i) {
+          return <button onClick={this.$rate.bind( this , i )}>{i}</button>;
+        }).bind(this) ) }
+      </div>
+
     </div>;
   }
 

@@ -836,6 +836,28 @@ var BlockConstructorMixin = {
     // TODO add total messages count or something to enable 'more' button
     //req.reply({msgs: outMsgs, highlights: highlights});
     req.reply({msgs: outMsgs});
+  },
+
+  $rate: function( req, msg, user, rate) {
+
+    console.log( msg );
+
+    var msg = this.msgs[msg];
+
+    console.log( msg );
+    if( ! msg.rates ) {
+      msg.rates = {};
+    }
+    msg.rates[ user ] = rate;
+    msg.save();
+
+    for (var channelId in this.channels) {
+      if (this.channels[channelId].type !== 'web') {
+        this.rpc(channelId + ':$rated', user, rate);
+      }
+    }
+    
+    req.reply();
   }
 
 };

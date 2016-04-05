@@ -8,7 +8,8 @@ var MessageList = React.createClass({
 
   getInitialState: function() {
     return {
-      msgs : []
+      msgs : [],
+      rates : []
     };
   },
 
@@ -25,12 +26,21 @@ var MessageList = React.createClass({
 
     return <div>
         {msgs.map(createItem)}
+        <div style={{'position' : 'fixed', 'top' : '0px', 'right' : '0px'}}>
+          {self.state.rates}
+        </div>
       </div>;
   },
 
   componentWillMount: function() { // check which is the corrct term here
 
     var self = this;
+
+    setInterval( function() {
+      var rates = self.state.rates;
+      rates.pop();
+      self.setState( {'rates' : rates } );
+    }, 25000 );
 
     // integrating using props.block isn't the fanciest way to do this, but will do for now
 
@@ -44,7 +54,7 @@ var MessageList = React.createClass({
     this.props.block.$data = function( msg ) {
 
       var msgs = self.state.msgs;
-      
+
       for( var i = 0; i < msgs.length; i++ ) { // could be done more smartly?
         if( msgs[i].id === msg.id ) {
           msgs[i] = msg;
@@ -61,7 +71,13 @@ var MessageList = React.createClass({
       msgs.push( msg );
       self.setState( { 'msgs': msgs } );
 
-    }
+    };
+
+    this.props.block.$rated = function( user , rate  ) {
+      var rates = self.state.rates;
+      rates.push( rate );
+      self.setState( { 'rates' : rates } );
+    };
 
   }
 
