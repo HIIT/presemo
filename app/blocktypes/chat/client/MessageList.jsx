@@ -19,11 +19,29 @@ var MessageList = React.createClass({
     var self = this;
 
     var createItem = function createItem(item, index) {
-      return <Message key={index} message={item} block={self.props.block}/>;
+      return <Message key={index} message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>;
     };
 
+    // response threads hack!
+    // collect all messages that are responses
     var msgs = this.state.msgs.slice();
-    msgs.reverse();
+
+    var _responses = msgs.filter( function(m) { return m.response != null; })
+    var firstmsg = msgs.filter( function(m) { return m.response == null; })
+
+    var responses = {};
+
+    for( var msg in firstmsg ) {
+      msg = firstmsg[ msg ];
+      responses[ msg.id ] = [];
+    }
+
+    for( var msg in _responses ) {
+      msg = _responses[ msg ];
+      responses[ msg.response ].push( msg );
+    }
+
+    firstmsg.reverse();
 
     return <div>
 
@@ -31,7 +49,7 @@ var MessageList = React.createClass({
         {self.state.rates}
       </div>
 
-        {msgs.map(createItem)}
+        {firstmsg.map(createItem)}
 
       </div>;
   },
@@ -73,7 +91,6 @@ var MessageList = React.createClass({
 
 
     this.props.block.$msgIn = function( msg ) {
-
       var msgs = self.state.msgs;
       msgs.push( msg );
       self.setState( { 'msgs': msgs } );

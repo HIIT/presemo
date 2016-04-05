@@ -397,7 +397,8 @@ var BlockConstructorMixin = {
       q: this.frontends.moderated ? 'x' : '',
       admin: (req.channel.type === 'control'),
       parent: msgIn.parent,
-      tags: []
+      tags: [],
+      response: msgIn.response || null
     };
 
     attrs.meta = {
@@ -963,6 +964,7 @@ function Message(options) {
   this.q = options.q || '';
   this.admin = options.admin || false;
   this.parent = options.parent;
+  this.response = options.response || null;
   // if (options.promoted) {
   //   options.promoted = true;
   // }
@@ -998,7 +1000,8 @@ var MessageMixin = {
       parent: this.parent,
       //promoted: this.promoted, // mostly undefined
       tweetId: this.tweetId, // only for tweets, otherwise undefined
-      html: this.html // only for tweets, otherwise undefined
+      html: this.html, // only for tweets, otherwise undefined
+      response : this.response,
     });
     return this;
   },
@@ -1011,7 +1014,8 @@ var MessageMixin = {
       q: this.q,
       admin: this.admin ? true : undefined,
       username: this.username ? this.username : '',
-      parent: this.parent ? this.parent : undefined
+      parent: this.parent ? this.parent : undefined,
+      response : this.response,
       //promoted: this.promoted ? true : undefined
       //isWire: true
     };

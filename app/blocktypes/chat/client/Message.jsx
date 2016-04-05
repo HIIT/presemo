@@ -1,5 +1,17 @@
 var Message = React.createClass({
 
+  getInitialState: function() {
+    return {
+      response: '...'
+    };
+  },
+
+  getDefaultProps: function() {
+    return {
+      responses: []
+    }
+  },
+
   time_fix: function( time ) {
 
     // todo: this might be a code that should be commonized
@@ -19,6 +31,18 @@ var Message = React.createClass({
 
   },
 
+  responseChange: function( event ){
+    this.setState( { 'response' : event.target.value } );
+  },
+
+  $respond: function(event) {
+    var _default = this.getInitialState().response;
+    if( this.state.response != _default ) {
+      this.props.block.rpc('$msg', { text : this.state.response, response: this.props.message.id } );
+    }
+    this.setState( { 'response' : _default } );
+  },
+
   $highlight: function() {
     this.props.block.rpc('$toggleTag', this.props.message.id, 'screen');
   },
@@ -32,6 +56,14 @@ var Message = React.createClass({
   },
 
   render: function render() {
+
+    var self = this;
+
+    console.log( self.props.canRespond );
+
+    var createItem = function createItem(item, index) {
+      return <Message key={index} message={item} block={self.props.block} canRespond={false} responses={[]}/>;
+    };
 
     var buttons = [];
 
@@ -62,18 +94,38 @@ var Message = React.createClass({
       }
     }
 
+    // response functionality
+
+    var response_field = '';
+
+    if( this.props.canRespond ) {
+      response_field = <div className="input-group">
+        <input type="text" className="form-control" onChange={this.responseChange} value={this.state.response} />
+        <span className="input-group-btn">
+          <button onClick={this.$respond} className="btn btn-default" type="button">Respond</button>
+        </span>
+      </div>;
+    }
+
     var rates = [1,2,3,4,5];
 
     return <div style={style}>
       {time}{' '}-{' '}
       {this.props.message.text}{' '}
       {buttons}
-
-      <div>
+      <span>
         { rates.map( (function(i) {
           return <button onClick={this.$rate.bind( this , i )}>{i}</button>;
         }).bind(this) ) }
+      </span>
+
+      <div style={{'margin-left': '20px'}}>
+        {this.props.responses.map(createItem)}
       </div>
+
+      {response_field}
+
+
 
     </div>;
   }
