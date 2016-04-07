@@ -77,16 +77,78 @@
   font-style: italic;
 }
 
-.emoticon-happy {
-  background: blue;
-  height: 20px;
-  width: 20px;
-  float: right;
+.emoticon-like {
+  height: 35px;
+  width: 40px;
+  float:left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-like.png');
+  background-repeat: no-repeat;
+}
+
+.emoticon-wow {
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-wow.png');
+  background-repeat: no-repeat;
+}
+
+.emoticon-haha {
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-haha.png');
+  background-repeat: no-repeat;
+}
+
+.emoticon-love {
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-love.png');
+  background-repeat: no-repeat;
+}
+
+.emoticon-angry {
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-angry.png');
+  background-repeat: no-repeat;
 }
 
 .emoticon-sad {
-  background: red;
-  height: 20px;
-  width: 20px;
-  float: right;
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-sad.png');
+  background-repeat: no-repeat;
+}
+
+.emoticon-yay {
+  height: 35px;
+  width: 40px;
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
+  background: url('/dev/assets/static/img/reaction-yay.png');
+  background-repeat: no-repeat;
+}
+
+.clearfix {
+  clear: both;
+  overflow: auto;
+	width: 100%
 }

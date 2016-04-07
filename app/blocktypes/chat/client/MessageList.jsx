@@ -23,7 +23,7 @@ var MessageList = React.createClass({
     };
 
     var showRates = function(item, index) {
-      return <div key={index} className={'emoticon-' + item}>&nbsp;</div>;
+      return <div key={index} className={'emoticon-' + item}></div>;
     };
 
     // response threads hack!

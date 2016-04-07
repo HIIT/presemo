@@ -62,8 +62,10 @@ var Message = React.createClass({
     console.log( self.props.canRespond );
 
     var createItem = function createItem(item, index) {
-      return <Message key={index} message={item} block={self.props.block} canRespond={false} responses={[]}/>;
-    };
+      return <li>
+                <Message key={index} message={item} block={self.props.block} canRespond={false} responses={[]}/>;
+            </li>
+  };
 
     var buttons = [];
 
@@ -80,7 +82,9 @@ var Message = React.createClass({
     var time = new Date( this.props.message.time || this.props.message.tc );
     time = this.time_fix( time );
 
-    var style = {};
+    var style = {
+      height: '40px'
+    };
 
     var tags = this.props.message.tags || [];
 
@@ -107,20 +111,24 @@ var Message = React.createClass({
       </div>;
     }
 
-    var rates = ['happy', 'sad'];
+    var rates = ['like','wow','haha','love','angry','sad','yay'].reverse();
 
     return <div style={style}>
       {time}{' '}-{' '}
       {this.props.message.text}{' '}
       {buttons}
-      <span>
+      <br/>
+      <div>
         { rates.map( (function(i) {
           return <div className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
         }).bind(this) ) }
-      </span>
+        <div className="clearfix"></div>
+      </div>
 
       <div style={{'margin-left': '20px'}}>
+        <ul>
         {this.props.responses.map(createItem)}
+        </ul>
       </div>
 
       {response_field}
