@@ -76,3 +76,17 @@
   background-color: rgba(80, 80, 80, 0.2);
   font-style: italic;
 }
+
+.emoticon-happy {
+  background: blue;
+  height: 20px;
+  width: 20px;
+  float: right;
+}
+
+.emoticon-sad {
+  background: red;
+  height: 20px;
+  width: 20px;
+  float: right;
+}

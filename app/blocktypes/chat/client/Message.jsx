@@ -107,7 +107,7 @@ var Message = React.createClass({
       </div>;
     }
 
-    var rates = [1,2,3,4,5];
+    var rates = ['happy', 'sad'];
 
     return <div style={style}>
       {time}{' '}-{' '}
@@ -115,7 +115,7 @@ var Message = React.createClass({
       {buttons}
       <span>
         { rates.map( (function(i) {
-          return <button onClick={this.$rate.bind( this , i )}>{i}</button>;
+          return <div className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
         }).bind(this) ) }
       </span>
 

@@ -18,8 +18,12 @@ var MessageList = React.createClass({
 
     var self = this;
 
-    var createItem = function createItem(item, index) {
+    var createItem = function(item, index) {
       return <Message key={index} message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>;
+    };
+
+    var showRates = function(item, index) {
+      return <div key={index} className={'emoticon-' + item}>&nbsp;</div>;
     };
 
     // response threads hack!
@@ -46,7 +50,7 @@ var MessageList = React.createClass({
     return <div>
 
       <div style={{'position' : 'fixed', 'top' : '5px', 'right' : '25px', 'background' : 'white'}}>
-        {self.state.rates}
+        {self.state.rates.map(showRates)}
       </div>
 
         {firstmsg.map(createItem)}
