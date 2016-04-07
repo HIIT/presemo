@@ -2,7 +2,8 @@ var Message = React.createClass({
 
   getInitialState: function() {
     return {
-      response: ''
+      response: '',
+      has_reacted : false
     };
   },
 
@@ -53,6 +54,7 @@ var Message = React.createClass({
 
   $rate: function( i ) {
     this.props.block.rpc('$rate', this.props.message.id, i );
+    this.setState( {'has_reacted' : true } );
   },
 
   render: function render() {
@@ -111,19 +113,19 @@ var Message = React.createClass({
       </div>;
     }
 
-    var rates = ['like','wow','haha','love','angry','sad','yay'].reverse();
+    var rates = ! this.state.has_reacted ? ['like','wow','haha','love','angry','sad','yay'] : [];
+    var rates_text = this.state.has_reacted ? 'Reaction send to author' : '';
 
     return <div style={style}>
       {time}{' '}-{' '}
       {this.props.message.text}{' '}
       {buttons}
       <br/>
-      <div>
         { rates.map( (function(i) {
           return <div className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
         }).bind(this) ) }
+        {rates_text}
         <div className="clearfix"></div>
-      </div>
 
       <div style={{'margin-left': '20px'}}>
         <ul>
