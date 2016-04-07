@@ -2,7 +2,7 @@ var Message = React.createClass({
 
   getInitialState: function() {
     return {
-      response: '...'
+      response: ''
     };
   },
 
