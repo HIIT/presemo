@@ -362,7 +362,7 @@ var BlockConstructorMixin = {
     if (this.frontends.usernames && msgIn.withUsername) {
       username = req.user.personas.username || '';
     } else {
-      username = '';
+      username = req.user.personas.username || '';
     }
 
     var text = common.functions.trimWhitespace(msgIn.text).substring(0, 500);
