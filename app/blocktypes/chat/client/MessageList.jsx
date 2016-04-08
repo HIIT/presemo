@@ -19,7 +19,9 @@ var MessageList = React.createClass({
     var self = this;
 
     var createItem = function(item, index) {
-      return <Message key={index} message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>;
+      return <li>
+                <Message key={index} message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>
+            </li>;
     };
 
     var showRates = function(item, index) {
@@ -53,7 +55,9 @@ var MessageList = React.createClass({
         {self.state.rates.map(showRates)}
       </div>
 
+        <ul>
         {firstmsg.map(createItem)}
+        </ul>
 
       </div>;
   },

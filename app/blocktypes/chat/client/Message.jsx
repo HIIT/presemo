@@ -84,9 +84,7 @@ var Message = React.createClass({
     var time = new Date( this.props.message.time || this.props.message.tc );
     time = this.time_fix( time );
 
-    var style = {
-      height: '40px'
-    };
+    var style = {};
 
     var tags = this.props.message.tags || [];
 
@@ -128,9 +126,9 @@ var Message = React.createClass({
         <div className="clearfix"></div>
 
       <div style={{'margin-left': '20px'}}>
-        <ul>
+        <ol>
         {this.props.responses.map(createItem)}
-        </ul>
+        </ol>
       </div>
 
       {response_field}
