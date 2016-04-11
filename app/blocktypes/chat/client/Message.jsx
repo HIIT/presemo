@@ -64,8 +64,8 @@ var Message = React.createClass({
     console.log( self.props.canRespond );
 
     var createItem = function createItem(item, index) {
-      return <li>
-                <Message key={index} message={item} block={self.props.block} canRespond={false} responses={[]}/>;
+      return <li key={index}>
+                <Message message={item} block={self.props.block} canRespond={false} responses={[]}/>;
             </li>
   };
 
@@ -119,8 +119,8 @@ var Message = React.createClass({
       {this.props.message.text}{' '}
       {buttons}
       <br/>
-        { rates.map( (function(i) {
-          return <div className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
+        { rates.map( (function(i, item) {
+          return <div key={item} className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
         }).bind(this) ) }
         {rates_text}
         <div className="clearfix"></div>
