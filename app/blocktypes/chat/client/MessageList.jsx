@@ -19,7 +19,7 @@ var MessageList = React.createClass({
     var self = this;
 
     var createItem = function(item, index) {
-      return <li key={'message-' + index}>
+      return <li key={'message-' + item.id}>
                 <Message message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>
             </li>;
     };
@@ -47,7 +47,7 @@ var MessageList = React.createClass({
       responses[ msg.response ].push( msg );
     }
 
-    // firstmsg.reverse();
+    firstmsg.reverse();
 
     return <div>
 

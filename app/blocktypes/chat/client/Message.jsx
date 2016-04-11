@@ -64,7 +64,7 @@ var Message = React.createClass({
     console.log( self.props.canRespond );
 
     var createItem = function createItem(item, index) {
-      return <li key={index}>
+      return <li key={'message-response-' + item.id}>
                 <Message message={item} block={self.props.block} canRespond={false} responses={[]}/>;
             </li>
   };
@@ -120,7 +120,7 @@ var Message = React.createClass({
       {buttons}
       <br/>
         { rates.map( (function(i, item) {
-          return <div key={item} className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
+          return <div key={'emoticon-'+i} className={'emoticon-' + i} onClick={this.$rate.bind( this , i )}> </div>;
         }).bind(this) ) }
         {rates_text}
         <div className="clearfix"></div>
