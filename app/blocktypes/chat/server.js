@@ -442,6 +442,21 @@ var BlockConstructorMixin = {
       }
     }
 
+    // notify about responses
+    if( attrs.response ) {
+
+      for (var channelId in this.channels) {
+        //this.rpc(channelId + ':$msgIn', msg.toWire(req));
+        var channel = this.channels[channelId];
+        for (var socketId in channel.eioSockets) {
+          var socket = channel.eioSockets[socketId];
+          if (!socket.user || !socket.rpc) continue;
+          socket.rpc(this.id + '.$responseIn', this.msgs[ attrs.response ] );
+        }
+      }
+
+    }
+
     console.info({
       userId: req.user.id,
       channelId: req.channel.id,

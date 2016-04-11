@@ -10,6 +10,7 @@ var MessageList = React.createClass({
     return {
       msgs : [],
       rates : [],
+      responses : [],
       user : -1
     };
   },
@@ -27,6 +28,10 @@ var MessageList = React.createClass({
     var showRates = function(item, index) {
       return <div key={index} className={'emoticon-' + item}></div>;
     };
+
+    var showResponses = function( item, index ) {
+      return <div>{item}</div>;
+    }
 
     // response threads hack!
     // collect all messages that are responses
@@ -52,7 +57,8 @@ var MessageList = React.createClass({
     return <div>
 
       <div style={{'position' : 'fixed', 'top' : '5px', 'right' : '25px', 'background' : 'white'}}>
-        {self.state.rates.map(showRates)}
+        <p>{self.state.rates.map(showRates)}</p>
+        <p>{self.state.responses.map(showResponses)}</p>
       </div>
 
         <ul>
@@ -69,7 +75,9 @@ var MessageList = React.createClass({
     setInterval( function() {
       var rates = self.state.rates;
       rates.pop();
-      self.setState( {'rates' : rates } );
+      var responses = self.state.responses;
+      responses.pop()
+      self.setState( {'rates' : rates, 'responses' : responses } );
     }, 25000 );
 
     // integrating using props.block isn't the fanciest way to do this, but will do for now
@@ -111,6 +119,30 @@ var MessageList = React.createClass({
         var rates = self.state.rates;
         rates.push( rate );
         self.setState( { 'rates' : rates } );
+      }
+    };
+
+    this.props.block.$responseIn = function( msg ) {
+
+      if( msg.meta.userId == self.state.user ) {
+
+        var time = new Date( msg.time || msg.tc );
+        var hours = time.getHours();
+        var mins = time.getMinutes();
+
+        if( hours < 10 ) {
+          hours = '0' + hours;
+        }
+
+        if( mins < 10 ) {
+          mins = '0' + mins;
+        }
+
+        time = hours + ':' + mins;
+
+        var responses = self.state.responses;
+        responses.push( 'Message at ' + time + ' responded' );
+        self.setState( { 'responses' : responses } );
       }
     };
 
