@@ -61,8 +61,6 @@ var Message = React.createClass({
 
     var self = this;
 
-    console.log( self.props.canRespond );
-
     var createItem = function createItem(item, index) {
       return <li key={'message-response-' + item.id}>
                 <Message message={item} block={self.props.block} canRespond={false} responses={[]}/>;
