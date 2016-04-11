@@ -122,9 +122,9 @@ var MessageList = React.createClass({
       }
     };
 
-    this.props.block.$responseIn = function( msg ) {
+    this.props.block.$responseIn = function( user, msg ) {
 
-      if( msg.meta.userId == self.state.user ) {
+      if( user == self.state.user ) {
 
         var time = new Date( msg.time || msg.tc );
         var hours = time.getHours();
@@ -141,7 +141,7 @@ var MessageList = React.createClass({
         time = hours + ':' + mins;
 
         var responses = self.state.responses;
-        responses.push( 'Message at ' + time + ' responded' );
+        responses.push( 'Thread at ' + time + ' responded' );
         self.setState( { 'responses' : responses } );
       }
     };

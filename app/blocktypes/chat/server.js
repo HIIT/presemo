@@ -445,13 +445,40 @@ var BlockConstructorMixin = {
     // notify about responses
     if( attrs.response ) {
 
+      var responses = [];
+      responses.push( this.msgs[ attrs.response ].meta.userId );
+
+      function unique(arr) {
+        var u = {}, a = [];
+        for(var i = 0, l = arr.length; i < l; ++i){
+          if(!u.hasOwnProperty(arr[i])) {
+            a.push(arr[i]);
+            u[arr[i]] = 1;
+          }
+        }
+        return a;
+      }
+
+      // check for responses to this message
+      for( var i in this.msgs ) {
+        if( this.msgs[ i ].response == attrs.response ) {
+          responses.push( this.msgs[ i ].meta.userId );
+        }
+      }
+
+      responses = unique( responses );
+
       for (var channelId in this.channels) {
         //this.rpc(channelId + ':$msgIn', msg.toWire(req));
         var channel = this.channels[channelId];
         for (var socketId in channel.eioSockets) {
           var socket = channel.eioSockets[socketId];
           if (!socket.user || !socket.rpc) continue;
-          socket.rpc(this.id + '.$responseIn', this.msgs[ attrs.response ] );
+          for( var user in responses ) {
+            user = responses[ user ];
+            if( user !=  req.user.id )
+            socket.rpc(this.id + '.$responseIn', user,  this.msgs[ attrs.response ] );
+          }
         }
       }
 
