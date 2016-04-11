@@ -20,7 +20,6 @@ var MessageList = React.createClass({
 
     var createItem = function(item, index) {
       return <li key={'message-' + index}>
-                {'message-' + index}
                 <Message message={item} block={self.props.block} canRespond={true} responses={responses[item.id]}/>
             </li>;
     };
