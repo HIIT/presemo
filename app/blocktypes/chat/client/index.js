@@ -28,8 +28,6 @@ var dictionary = require('./lang');
 
 var heading = require('./heading');
 var messaging = require('./messaging');
-var quality = require('./quality');
-var highlights = require('./highlights');
 
 require('./styles');
 
@@ -131,8 +129,6 @@ Block.prototype.render = function() {
   // Block specific functionalities
   heading(this);
   messaging(this);
-  quality(this);
-  highlights(this);
 
   // ParticipantCount
   if (__CONTROL__ || __STAGE__) {

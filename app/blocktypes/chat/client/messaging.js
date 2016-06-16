@@ -18,7 +18,6 @@
 
 var moment = require('/core/moment');
 
-var msgView = require('./msg.html');
 // TODO move highlights translations locally here
 var dict = require('./lang');
 
