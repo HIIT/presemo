@@ -48,7 +48,17 @@ var Message = React.createClass({
 
     var tags = this.props.message.tags || [];
 
-    if( tags.indexOf('screen') >= 0 ) style.fontWeight = 'bold';
+    if( tags.indexOf('screen') >= 0 ) {
+      style.fontWeight = 'bold';
+
+      if( __SCREEN__ ) {
+        style.background = "yellow";
+        style.fontSize = "250%";
+        style.marginBottom = "10px";
+        style.width = "100%";
+      }
+
+    }
 
     if( tags.indexOf('delete') >= 0 )  {
       if( __CONTROL__ ) {

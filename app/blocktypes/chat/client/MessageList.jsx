@@ -23,8 +23,46 @@ var MessageList = React.createClass({
     var msgs = this.state.msgs.slice();
     msgs.reverse();
 
+    // for screen, separate highlighted items for a separate div
+
+    var highlights = [];
+
+
+    if( __SCREEN__ ) {
+
+      var removed = [];
+
+      for( var i in msgs ) {
+
+      var msg = msgs[i];
+
+      var tags = msg.tags || [];
+
+        if( tags.indexOf('screen') >= 0 ) {
+          highlights.push( msg );
+          removed.push( i );
+        }
+
+      }
+
+      removed.reverse()
+
+      for( var i in removed ) {
+        i = removed[i];
+        console.log("removed " + i );
+        msgs.splice( i , 1 );
+      }
+
+    }
+
+    // end screen spesific code
+
     return <div>
         {msgs.map(createItem)}
+
+        <div style={{position: 'absolute', top: '30px'}}>
+          {highlights.map(createItem)}
+        </div>
       </div>;
   },
 
@@ -44,7 +82,7 @@ var MessageList = React.createClass({
     this.props.block.$data = function( msg ) {
 
       var msgs = self.state.msgs;
-      
+
       for( var i = 0; i < msgs.length; i++ ) { // could be done more smartly?
         if( msgs[i].id === msg.id ) {
           msgs[i] = msg;
