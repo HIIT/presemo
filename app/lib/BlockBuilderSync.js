@@ -21,6 +21,8 @@
  */
 /*jshint node: true */
 
+var babel = require("babel-core")
+
 "use strict";
 
 if (!module.parent) {
@@ -334,7 +336,7 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
   function buildJS(done) {
     debug('checking js build');
     var files = glob.sync(
-      join(CLIENT_DIR, '!(_)*.js'),
+      join(CLIENT_DIR, '!(_)*.js*'), // to accept JSX
       {nonull: false, cache: globCache, statCache: statCache}
     );
     async.each(files, buildJSFile, done);
@@ -369,6 +371,14 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
       var processedFileContents =
           replaceConstants(fileContents, BUILD_CONSTANTS);
 
+
+      if( filename.indexOf('.jsx') > 0 ) {
+        processedFileContents = babel.transform( processedFileContents , { "plugins": ["transform-react-jsx"] } ).code; // fix react
+        console.info( processedFileContents );
+      }
+
+      filename = filename.replace(/\.jsx$/, '.js'); // make JSX files regular JS FILES
+
       // Register as a common js module if filename does not include '.global.'
       if (filename.indexOf('.global.') == -1) {
         processedFileContents =
@@ -380,9 +390,12 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
 
       // Minify file (or just beautify it if in dev env) if filename does not
       // include .min.
+
       if (filename.indexOf('.min.') == -1) {
         try {
+          // console.log("OK?");
           processedFileContents = minifyJS(processedFileContents);
+
         } catch (e) {
           console.error(
             'Error minifying file: %s (line numbers below are inaccurate)',
@@ -405,6 +418,8 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
           filename + '",function(){});') {
         processedFileContents = '';
       }
+
+      targetFilepath = join( BUILD_DIR_CHANNEL, filename );
 
       fs.writeFileSync(targetFilepath, processedFileContents);
       done();
@@ -559,6 +574,7 @@ function continueBuild(BLOCKTYPE, BLOCK_DIR, CLIENT_DIR,
         }
 
       }
+
 
       fs.writeFileSync(targetFilepath, processedFileContents);
       done();

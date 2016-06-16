@@ -18,7 +18,6 @@
 
 var moment = require('/core/moment');
 
-var msgView = require('./msg.html');
 // TODO move highlights translations locally here
 var dict = require('./lang');
 
@@ -27,6 +26,8 @@ var siteConfig = require('/core').config;
 var rpc = require('/core/rpc');
 
 var common = require('./commonClient.js');
+
+var MessageList = require('./MessageList');
 
 exports = module.exports = initMessaging;
 
@@ -69,9 +70,17 @@ function initMessagingBasics(block) {
   if (!block.msgs) block.msgs = [];
   if (!block.msgsById) block.msgsById = {};
 
+  var r = React.createElement( MessageList, { block : block } );
+
+  // make msg-list react
+  ReactDOM.render(
+    r , block.$msgsDiv[ 0 ]
+  );
+
   // load previous messages when a "data" call is made
   // TODO get first batch of messages already from block config
   // for fast rendering, just update more via data or specific rpc requests
+  /*
   block.on('data', function(data) {
     // TODO compare here or somewhere
     if (data.msgs) {
@@ -80,8 +89,9 @@ function initMessagingBasics(block) {
       }
     }
   });
+  */
 
-  block.$msgIn = $msgIn;
+  // block.$msgIn = $msgIn;
 
   // Reset block is here for now
   block.$clear = function() {
@@ -245,6 +255,7 @@ function $msgIn(msg, immediate) {
     var $removedMsg = $('#' + removedMsg.id); // From document, not scoped to $el this time
     $removedMsg.remove(); // .detach would keep the events intact
   }
+  /*
 
   // TODO load more button
 
@@ -255,6 +266,16 @@ function $msgIn(msg, immediate) {
   })));
 
   var $msgsDiv = this.$msgsDiv;
+
+  var html = React.renderToStaticMarkup( React.createElement( Message, { msg : msg } ) );
+
+  console.log( MessageList );
+
+  var html2 = React.renderToStaticMarkup( React.createElement( MessageList, { items : this.msgs } ) );
+
+  console.log( html2 )
+
+  $msg.append( html );
 
   if (msg.parent) {
     if (__SCREEN__) {
@@ -303,7 +324,7 @@ function $msgIn(msg, immediate) {
       });
     }
   }
-
+ */
 };
 
 function initReplying(block) {

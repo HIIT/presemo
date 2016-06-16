@@ -1,5 +1,7 @@
 *.sublime*
 .tern-port
+.DS_Store
+
 /db/*
 /logs/*
 /build/*
