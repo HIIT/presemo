@@ -324,12 +324,12 @@ function initToggleStdDevOnScreen(block) {
       }
 
       $button.on('click', function(ev) {
-        if (block.config.showStddevOnScreen) {
+        if (block.config.timer) {
           buttonOff();
-          block.rpc('$showStddevOnScreen', false);
+          block.rpc('$timer', false);
         } else {
           buttonOn();
-          block.rpc('$showStddevOnScreen', true);
+          block.rpc('$timer', true);
         }
         return false;
       });
@@ -345,6 +345,21 @@ function initToggleStdDevOnScreen(block) {
     }
 
     $newButton().appendTo(block.$minibar);
+
+
+    function $newButton2() {
+      var buttonStr = '<a class="btn btn-sm" href="#">TIMER</a>';
+      var $button = $(buttonStr);
+
+      $button.on('click', function(ev) {
+          block.rpc('$timer');
+          return false;
+      });
+
+      return $button;
+    }
+
+    $newButton2().appendTo(block.$minibar);
   }
 
   if (__CONTROL__ || __STAGE__ || __SCREEN__) {

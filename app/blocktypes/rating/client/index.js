@@ -131,6 +131,33 @@ Block.prototype.render = function() {
   quality(this);
   rating(this);
 
+  this.$runTimer = function() {
+    var timelimit = 60*3*10;
+    var ticks = 0;
+
+    var self = this.$el;
+
+    var counter = setInterval( function(){
+
+      ticks++;
+
+      var d = ( 1 - ticks/timelimit) * 100;
+
+
+
+      self.find('.timer').css( {
+        'width' : d + '%'
+      } );
+
+      if( ticks >= timelimit ) {
+        clearInterval( counter );
+        self.find('.timer').html('');
+      }
+
+    }, 100);
+
+  };
+
   // ParticipantCount
   if (__CONTROL__ || __STAGE__) {
     controls.participantCount(this);

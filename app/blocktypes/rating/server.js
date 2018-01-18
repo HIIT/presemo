@@ -192,6 +192,7 @@ function Block(options) {
     ratingButtons: true,
     likertScale: false,
     showStddevOnScreen: false,
+    timer: false,
     showPercentages: false,
     hideMsgsOnWeb: false,
     moderated: false,
@@ -472,6 +473,16 @@ Block.prototype.$showStddevOnScreen = function(req, showStddevOnScreen) {
       showStddevOnScreen: this.frontends.showStddevOnScreen
     }, '$showStddevOnScreen');
   }
+};
+
+Block.prototype.$timer = function(req, showStddevOnScreen) {
+  if (req.channel.type !== 'control') return;
+
+  for (var channelId in this.channels) {
+    this.rpc(channelId + ':$runTimer', {timer: 'run'} );
+  }
+
+  console.info("Timer is running?");
 };
 
 Block.prototype.$showPercentages = function(req, showPercentages) {
